@@ -7,13 +7,50 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
+      courses: {
+        Row: {
+          category: string | null
+          certificate_url: string | null
+          created_at: string
+          hours: number | null
+          id: string
+          institution: string
+          sort_order: number
+          title: string
+          updated_at: string
+          year: number | null
+        }
+        Insert: {
+          category?: string | null
+          certificate_url?: string | null
+          created_at?: string
+          hours?: number | null
+          id?: string
+          institution: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+          year?: number | null
+        }
+        Update: {
+          category?: string | null
+          certificate_url?: string | null
+          created_at?: string
+          hours?: number | null
+          id?: string
+          institution?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+          year?: number | null
+        }
+        Relationships: []
+      }
       profile: {
         Row: {
           about: string
@@ -51,6 +88,7 @@ export type Database = {
         Row: {
           created_at: string
           description: string
+          features: string[] | null
           id: string
           image_url: string | null
           link_url: string | null
@@ -62,6 +100,7 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string
+          features?: string[] | null
           id?: string
           image_url?: string | null
           link_url?: string | null
@@ -73,6 +112,7 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string
+          features?: string[] | null
           id?: string
           image_url?: string | null
           link_url?: string | null
@@ -80,6 +120,33 @@ export type Database = {
           tags?: string[]
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      skill_items: {
+        Row: {
+          created_at: string
+          id: string
+          level: number
+          name: string
+          skill_id: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          level?: number
+          name: string
+          skill_id: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          level?: number
+          name?: string
+          skill_id?: string
+          sort_order?: number
         }
         Relationships: []
       }
