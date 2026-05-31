@@ -89,6 +89,7 @@ export type Database = {
           created_at: string
           description: string
           features: string[] | null
+          github_url: string | null
           id: string
           image_url: string | null
           link_url: string | null
@@ -101,6 +102,7 @@ export type Database = {
           created_at?: string
           description?: string
           features?: string[] | null
+          github_url?: string | null
           id?: string
           image_url?: string | null
           link_url?: string | null
@@ -113,6 +115,7 @@ export type Database = {
           created_at?: string
           description?: string
           features?: string[] | null
+          github_url?: string | null
           id?: string
           image_url?: string | null
           link_url?: string | null
