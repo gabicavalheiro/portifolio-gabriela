@@ -25,7 +25,7 @@ const marqueeWords = [
 ];
 
 type Profile    = { name: string; headline: string; bio: string; email: string; about: string };
-type Project    = { id: string; title: string; description: string; tags: string[]; image_url: string | null; link_url: string | null; features: string[] | null };
+type Project    = { id: string; title: string; description: string; tags: string[]; image_url: string | null; link_url: string | null; github_url: string | null; features: string[] | null };
 type Skill      = { id: string; category: string; items: string; sort_order: number };
 type SkillItem  = { id: string; skill_id: string; name: string; level: number; sort_order: number };
 type Social     = { id: string; label: string; url: string; icon: string };
@@ -82,6 +82,12 @@ function ProjectCard({ p }: { p: Project }) {
               Ver mais <ArrowRight className="w-3 h-3" />
             </a>
           )}
+          {p.github_url && (
+            <a href={p.github_url} target="_blank" rel="noreferrer" aria-label="Ver no GitHub"
+              className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border text-muted-foreground hover:border-foreground hover:text-foreground transition-all">
+              <Github className="w-3.5 h-3.5" />
+            </a>
+          )}
           {hasFeatures && (
             <button onClick={() => setShowFeatures((v) => !v)}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs text-muted-foreground hover:border-primary hover:text-primary transition-all">
@@ -132,15 +138,12 @@ function ProjectsCarousel({ projects }: { projects: Project[] }) {
   );
 }
 
-// Barra de progresso animada
 function SkillBar({ name, level }: { name: string; level: number }) {
   const [animated, setAnimated] = useState(false);
-
   useEffect(() => {
     const t = setTimeout(() => setAnimated(true), 100);
     return () => clearTimeout(t);
   }, []);
-
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between">
@@ -148,17 +151,13 @@ function SkillBar({ name, level }: { name: string; level: number }) {
         <span className="text-[10px] font-mono text-muted-foreground">{level}%</span>
       </div>
       <div className="h-1 rounded-full bg-border overflow-hidden">
-        <div
-          className="h-full rounded-full relative overflow-hidden transition-all duration-1000 ease-out"
+        <div className="h-full rounded-full relative overflow-hidden transition-all duration-1000 ease-out"
           style={{
             width: animated ? `${level}%` : "0%",
-            background: level === 100
-              ? "linear-gradient(90deg, var(--primary), var(--primary-glow))"
-              : level >= 90
+            background: level >= 90
               ? "linear-gradient(90deg, var(--primary), var(--primary-glow))"
               : "var(--primary)",
-          }}
-        >
+          }}>
           <span className="absolute inset-0 animate-shimmer"
             style={{ background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)" }} />
         </div>
@@ -211,7 +210,6 @@ function Index() {
         style={{ background: "radial-gradient(circle, var(--primary-glow) 0%, transparent 70%)", animationDelay: "-5s" }} />
       <div aria-hidden className="pointer-events-none absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full border border-border opacity-40 animate-spin-slow" />
 
-      {/* ── Hero ── */}
       <main className="max-w-6xl mx-auto px-6 pt-20 pb-32 relative">
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24 animate-rise">
           <Annotation>About project</Annotation>
@@ -236,7 +234,6 @@ function Index() {
               <a href="#contato"  className="hover:text-foreground transition-colors">Contato</a>
             </nav>
           </div>
-
           <p className="font-mono text-sm text-muted-foreground mb-2">prazer,</p>
           <h1 className="font-mono font-bold tracking-tighter leading-[0.95] text-[14vw] md:text-[7.5rem] mb-2 bg-clip-text text-transparent animate-gradient"
             style={{ backgroundImage: "linear-gradient(90deg, var(--foreground), var(--primary), var(--primary-glow), var(--foreground))" }}>
@@ -269,7 +266,6 @@ function Index() {
         </section>
       </main>
 
-      {/* ── Marquee ── */}
       <div aria-hidden className="my-20 overflow-hidden border-y border-border py-6 bg-card/20 w-screen">
         <div className="flex gap-12 animate-marquee whitespace-nowrap font-mono text-2xl md:text-4xl text-muted-foreground w-max">
           {[...marqueeWords, ...marqueeWords, ...marqueeWords, ...marqueeWords].map((w, i) => (
@@ -278,7 +274,6 @@ function Index() {
         </div>
       </div>
 
-      {/* ── Bloco 2 ── */}
       <div className="max-w-6xl mx-auto px-6 pb-32 relative">
 
         {/* Sobre mim */}
@@ -379,7 +374,6 @@ function Index() {
               const items = skillItems
                 .filter((si) => si.skill_id === s.id)
                 .sort((a, b) => a.sort_order - b.sort_order);
-
               return (
                 <div key={s.id}
                   className="rounded-2xl border border-border px-6 py-5 bg-card/30 backdrop-blur-sm transition-all duration-500 hover:border-foreground/40 hover:bg-card/60">
@@ -428,5 +422,3 @@ function Index() {
     </div>
   );
 }
-
-//test
