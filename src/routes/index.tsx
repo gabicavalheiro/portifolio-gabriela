@@ -1,6 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, Github, Linkedin, Mail, Instagram, Sparkles, Lock } from "lucide-react";
+import { ArrowRight, Github, Linkedin, Mail, Instagram, Sparkles } from "lucide-react";
 import projectNeural from "@/assets/project-neural.jpg";
 import logo from "@/assets/logo.png";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/")({
 });
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Github, Linkedin, Mail, Instagram,
+  Github, Linkedin, Instagram,
 };
 
 const marqueeWords = [
@@ -64,7 +64,10 @@ function Index() {
         style={{ background: "radial-gradient(circle, var(--primary-glow) 0%, transparent 70%)", animationDelay: "-5s" }} />
       <div aria-hidden className="pointer-events-none absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full border border-border opacity-40 animate-spin-slow" />
 
+      {/* ── Bloco 1: Intro + Hero + Projetos ── */}
       <main className="max-w-6xl mx-auto px-6 pt-20 pb-32 relative">
+
+        {/* Intro */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24 animate-rise">
           <Annotation>About project</Annotation>
           <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-md">
@@ -74,28 +77,27 @@ function Index() {
           </p>
         </section>
 
-        <section className="relative rounded-[40px] border border-border bg-card/40 backdrop-blur-sm p-8 md:p-12 mb-32 overflow-hidden animate-rise" style={{ animationDelay: "0.1s" }}>
+        {/* Hero */}
+        <section className="relative rounded-[40px] border border-border bg-card/40 backdrop-blur-sm p-8 md:p-12 mb-0 overflow-hidden animate-rise" style={{ animationDelay: "0.1s" }}>
           <div aria-hidden className="absolute inset-x-0 top-0 h-px overflow-hidden">
             <div className="h-full w-1/3 bg-gradient-to-r from-transparent via-foreground/60 to-transparent animate-shimmer" />
           </div>
 
           <div className="flex items-start justify-between mb-12">
             <img src={logo} alt={profile?.name ?? "gabriela/dev"} className="h-8 md:h-10 w-auto" />
-
             <nav className="hidden md:flex gap-8 text-sm text-muted-foreground">
               <a href="#sobre" className="hover:text-foreground transition-colors story-link">Sobre</a>
               <a href="#projetos" className="hover:text-foreground transition-colors story-link">Projetos</a>
               <a href="#stack" className="hover:text-foreground transition-colors story-link">Stack</a>
               <a href="#contato" className="hover:text-foreground transition-colors story-link">Contato</a>
             </nav>
-            <Link to="/admin" className="font-mono text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1">
-              <Lock className="w-3 h-3" /> admin
-            </Link>
           </div>
 
           <p className="font-mono text-sm text-muted-foreground mb-2">prazer,</p>
-          <h1 className="font-mono font-bold tracking-tighter leading-[0.95] text-[14vw] md:text-[7.5rem] mb-2 bg-clip-text text-transparent animate-gradient"
-            style={{ backgroundImage: "linear-gradient(90deg, var(--foreground), var(--primary), var(--primary-glow), var(--foreground))" }}>
+          <h1
+            className="font-mono font-bold tracking-tighter leading-[0.95] text-[14vw] md:text-[7.5rem] mb-2 bg-clip-text text-transparent animate-gradient"
+            style={{ backgroundImage: "linear-gradient(90deg, var(--foreground), var(--primary), var(--primary-glow), var(--foreground))" }}
+          >
             <span className="block">{firstName}!</span>
           </h1>
           <p className="font-mono text-sm text-muted-foreground mb-2">Desenvolvedora,</p>
@@ -117,7 +119,8 @@ function Index() {
             {socials.map((s) => {
               const Icon = iconMap[s.icon] ?? Github;
               return (
-                <a key={s.id} href={s.url} className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border text-sm hover:border-foreground hover:-translate-y-0.5 transition">
+                <a key={s.id} href={s.url} target="_blank" rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border text-sm hover:border-foreground hover:-translate-y-0.5 transition">
                   <Icon className="w-4 h-4" />
                   {s.label}
                 </a>
@@ -125,10 +128,11 @@ function Index() {
             })}
           </div>
 
+          {/* Projetos */}
           <div id="projetos" className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {projects.map((p, i) => (
               <article key={p.id}
-                className={`group relative rounded-2xl border border-border overflow-hidden bg-background/60 transition-all duration-500 hover:opacity-100 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 ${i !== 0 ? "md:opacity-60 hover:opacity-100" : ""}`}>
+                className={`group relative rounded-2xl border border-border overflow-hidden bg-background/60 transition-all duration-500 hover:opacity-100 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 ${i !== 0 ? "md:opacity-60" : ""}`}>
                 <div className="aspect-[4/3] overflow-hidden">
                   <img src={p.image_url || projectNeural} alt={p.title} loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -142,7 +146,8 @@ function Index() {
                     ))}
                   </div>
                   {p.link_url && (
-                    <a href={p.link_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-foreground text-background text-xs font-medium group-hover:gap-3 transition-all">
+                    <a href={p.link_url} target="_blank" rel="noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-foreground text-background text-xs font-medium group-hover:gap-3 transition-all">
                       Ver mais <ArrowRight className="w-3 h-3" />
                     </a>
                   )}
@@ -151,37 +156,31 @@ function Index() {
             ))}
           </div>
         </section>
+      </main>
 
-        <section aria-hidden className="mb-32 -mx-6 overflow-hidden border-y border-border py-6 bg-card/20">
-          <div className="flex gap-12 animate-marquee whitespace-nowrap font-mono text-2xl md:text-4xl text-muted-foreground">
-            {[...marqueeWords, ...marqueeWords].map((w, i) => (
-              <span key={i} className="flex items-center gap-12">{w}<Sparkles className="w-5 h-5 text-primary" /></span>
-            ))}
-          </div>
-        </section>
+      {/* ── Marquee FORA do main — largura total da tela ── */}
+      <div aria-hidden className="my-20 overflow-hidden border-y border-border py-6 bg-card/20 w-screen">
+        <div className="flex gap-12 animate-marquee whitespace-nowrap font-mono text-2xl md:text-4xl text-muted-foreground w-max">
+          {[...marqueeWords, ...marqueeWords, ...marqueeWords, ...marqueeWords].map((w, i) => (
+            <span key={i} className="flex items-center gap-12">{w}<Sparkles className="w-5 h-5 text-primary" /></span>
+          ))}
+        </div>
+      </div>
 
-        <section id="sobre" className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
-          <Annotation>Sobre mim</Annotation>
-          <p className="text-base md:text-lg leading-relaxed whitespace-pre-line">
-            {profile?.about ?? ""}
-          </p>
-        </section>
+      {/* ── Bloco 2: Sobre, Stack, Contato ── */}
+      <div className="max-w-6xl mx-auto px-6 pb-32 relative">
 
-        <section id="stack" className="grid grid-cols-1 md:grid-cols-[1fr_320px] gap-12 mb-32 items-start">
-          <div className="space-y-4">
-            {skills.map((s, i) => (
-              <div key={s.id} className="group rounded-2xl border border-border px-6 py-5 bg-card/30 backdrop-blur-sm transition-all duration-500 hover:border-foreground/40 hover:-translate-y-1 hover:bg-card/60"
-                style={{ animationDelay: `${i * 0.1}s` }}>
-                <div className="font-medium text-sm mb-2 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />{s.category}
-                </div>
-                <div className="font-mono text-xs text-muted-foreground leading-relaxed">{s.items}</div>
-              </div>
-            ))}
+        {/* Sobre mim */}
+        <section id="sobre" className="flex flex-col md:flex-row gap-12 mb-32 items-stretch">
+          <div className="flex-1 flex flex-col justify-center">
+            <Annotation>Sobre mim</Annotation>
+            <p className="text-base md:text-lg leading-relaxed whitespace-pre-line mt-4">
+              {profile?.about ?? ""}
+            </p>
           </div>
 
-          <div className="relative">
-            <div className="rounded-3xl border border-border overflow-hidden bg-gradient-to-br from-card/60 to-background aspect-[3/4] relative flex items-center justify-center">
+          <div className="w-full md:w-[320px] shrink-0">
+            <div className="rounded-3xl border border-border bg-gradient-to-br from-card/60 to-background w-full h-full min-h-[300px] relative flex items-center justify-center overflow-hidden">
               <div className="absolute inset-6 rounded-full border border-border/60 animate-spin-slow" />
               <div className="absolute inset-12 rounded-full border border-border/40 animate-spin-reverse" />
               <div className="absolute inset-20 rounded-full border border-border/30 animate-spin-slow" style={{ animationDuration: "40s" }} />
@@ -198,6 +197,23 @@ function Index() {
           </div>
         </section>
 
+        {/* Stack */}
+        <section id="stack" className="mb-32">
+          <div className="space-y-4">
+            {skills.map((s, i) => (
+              <div key={s.id}
+                className="group rounded-2xl border border-border px-6 py-5 bg-card/30 backdrop-blur-sm transition-all duration-500 hover:border-foreground/40 hover:-translate-y-1 hover:bg-card/60"
+                style={{ animationDelay: `${i * 0.1}s` }}>
+                <div className="font-medium text-sm mb-2 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />{s.category}
+                </div>
+                <div className="font-mono text-xs text-muted-foreground leading-relaxed">{s.items}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Contato */}
         <section id="contato" className="relative rounded-[40px] border border-border p-10 md:p-16 text-center bg-card/30 backdrop-blur-sm overflow-hidden">
           <div aria-hidden className="absolute -top-20 left-1/2 -translate-x-1/2 w-[400px] h-[400px] rounded-full opacity-20 blur-3xl animate-blob"
             style={{ background: "radial-gradient(circle, var(--primary) 0%, transparent 70%)" }} />
@@ -205,14 +221,15 @@ function Index() {
             <Annotation>Contato</Annotation>
             <h2 className="font-mono font-bold tracking-tighter text-4xl md:text-6xl mt-6 mb-4">Vamos conversar?</h2>
             <p className="text-muted-foreground max-w-md mx-auto mb-8">Estou aberta para oportunidades, parcerias e projetos novos.</p>
-            <a href={`mailto:${profile?.email ?? "hello@gabriela.dev"}`}
-              className="group inline-flex items-center gap-3 px-6 py-3 rounded-full bg-foreground text-background font-medium hover:scale-105 transition-transform">
-              <Mail className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-              {profile?.email ?? "hello@gabriela.dev"}
+            <a href="mailto:gabriela.franca.cavalheiro@gmail.com"
+              aria-label="Enviar email"
+              className="group inline-flex items-center justify-center w-12 h-12 rounded-full bg-foreground text-background hover:scale-110 transition-transform animate-bounce">
+              <Mail className="w-5 h-5 group-hover:rotate-12 transition-transform" />
             </a>
           </div>
         </section>
-      </main>
+
+      </div>
 
       <footer className="border-t border-border py-8 relative">
         <div className="max-w-6xl mx-auto px-6 font-mono text-xs text-muted-foreground flex justify-between">
